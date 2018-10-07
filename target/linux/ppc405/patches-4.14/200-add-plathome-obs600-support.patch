@@ -1,0 +1,181 @@
+diff --git a/arch/powerpc/boot/dts/obs600.dts b/arch/powerpc/boot/dts/obs600.dts
+index 18e7d79ee4c3..87627ef5943e 100644
+--- a/arch/powerpc/boot/dts/obs600.dts
++++ b/arch/powerpc/boot/dts/obs600.dts
+@@ -305,7 +305,133 @@
+ 				device_type = "gpio";
+ 				compatible = "ibm,gpio-405ex", "ibm,ppc4xx-gpio";
+ 				reg = <0xef600800 0x50>;
++				#gpio-cells = <2>;
++				gpio-controller;
+ 			};
++			gpio-leds {
++				  compatible = "gpio-leds";
++				  yellow {
++					label = "led:yellow";
++					gpios = <&GPIO 0 1>; /* GPIO_ACTIVE_LOW */
++					default-state = "on";
++
++				  };
++				  green {
++					label = "led:green";
++					gpios = <&GPIO 1 1>; /* GPIO_ACTIVE_LOW */
++					default-state = "on";
++				  };
++				  red {
++					label = "led:red";
++					gpios = <&GPIO 2 1>; /* GPIO_ACTIVE_LOW */
++					default-state = "on";
++				  };
++			};
++			gpio-keys-polled {
++				  compatible = "gpio-keys-polled";
++				  poll-interval = <100>;
++				  INIT {
++				       label = "reset";
++				       linux,code = <116>; /* KEY_POWER */
++				       gpios = <&GPIO 31 0>; /* GPIO_ACTIVE_HIGH*/
++				   };
++			};
++		};
++
++		PCIE0: pcie@a0000000 {
++			device_type = "pci";
++			#interrupt-cells = <1>;
++			#size-cells = <2>;
++			#address-cells = <3>;
++			compatible = "ibm,plb-pciex-405ex", "ibm,plb-pciex";
++			primary;
++			port = <0x0>; /* port number */
++			reg = <0xa0000000 0x20000000	/* Config space access */
++			       0xef000000 0x00001000>;	/* Registers */
++			dcr-reg = <0x040 0x020>;
++			sdr-base = <0x400>;
++
++			/* Outbound ranges, one memory and one IO,
++			 * later cannot be changed
++			 */
++			ranges = <0x02000000 0x00000000 0x80000000 0x90000000 0x00000000 0x08000000
++				  0x01000000 0x00000000 0x00000000 0xe0000000 0x00000000 0x00010000>;
++
++			/* Inbound 2GB range starting at 0 */
++			dma-ranges = <0x42000000 0x0 0x0 0x0 0x0 0x80000000>;
++
++			/* This drives busses 0x00 to 0x3f */
++			bus-range = <0x0 0x3f>;
++
++			/* Legacy interrupts (note the weird polarity, the bridge seems
++			 * to invert PCIe legacy interrupts).
++			 * We are de-swizzling here because the numbers are actually for
++			 * port of the root complex virtual P2P bridge. But I want
++			 * to avoid putting a node for it in the tree, so the numbers
++			 * below are basically de-swizzled numbers.
++			 * The real slot is on idsel 0, so the swizzling is 1:1
++			 */
++			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
++			interrupt-map = <
++				0x0 0x0 0x0 0x1 &UIC2 0x0 0x4 /* swizzled int A */
++				0x0 0x0 0x0 0x2 &UIC2 0x1 0x4 /* swizzled int B */
++				0x0 0x0 0x0 0x3 &UIC2 0x2 0x4 /* swizzled int C */
++				0x0 0x0 0x0 0x4 &UIC2 0x3 0x4 /* swizzled int D */>;
++		};
++
++		PCIE1: pcie@c0000000 {
++			device_type = "pci";
++			#interrupt-cells = <1>;
++			#size-cells = <2>;
++			#address-cells = <3>;
++			compatible = "ibm,plb-pciex-405ex", "ibm,plb-pciex";
++			primary;
++			port = <0x1>; /* port number */
++			reg = <0xc0000000 0x20000000	/* Config space access */
++			       0xef001000 0x00001000>;	/* Registers */
++			dcr-reg = <0x060 0x020>;
++			sdr-base = <0x440>;
++
++			/* Outbound ranges, one memory and one IO,
++			 * later cannot be changed
++			 */
++			ranges = <0x02000000 0x00000000 0x80000000 0x98000000 0x00000000 0x08000000
++				  0x01000000 0x00000000 0x00000000 0xe0010000 0x00000000 0x00010000>;
++
++			/* Inbound 2GB range starting at 0 */
++			dma-ranges = <0x42000000 0x0 0x0 0x0 0x0 0x80000000>;
++
++			/* This drives busses 0x40 to 0x7f */
++			bus-range = <0x40 0x7f>;
++
++			/* Legacy interrupts (note the weird polarity, the bridge seems
++			 * to invert PCIe legacy interrupts).
++			 * We are de-swizzling here because the numbers are actually for
++			 * port of the root complex virtual P2P bridge. But I want
++			 * to avoid putting a node for it in the tree, so the numbers
++			 * below are basically de-swizzled numbers.
++			 * The real slot is on idsel 0, so the swizzling is 1:1
++			 */
++			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
++			interrupt-map = <
++				0x0 0x0 0x0 0x1 &UIC2 0xb 0x4 /* swizzled int A */
++				0x0 0x0 0x0 0x2 &UIC2 0xc 0x4 /* swizzled int B */
++				0x0 0x0 0x0 0x3 &UIC2 0xd 0x4 /* swizzled int C */
++				0x0 0x0 0x0 0x4 &UIC2 0xe 0x4 /* swizzled int D */>;
++		};
++
++		USBOTG0: usbotg@ef6c0000 {
++		compatible = "amcc,dwc-otg", "snps,dwc2", "amcc,dwc_otg";
++		reg = <0xef6c0000 0x10000>;
++		interrupt-parent = <&USBOTG0>;
++		interrupts = <0x0 0x1 0x2>;
++		#interrupt-cells = <0x1>;
++		#address-cells = <0x0>;
++		#size-cells = <0x0>;
++		interrupt-map = </* USB-OTG */ 0x0 &UIC2 0x1e 0x4
++						/* HIGH-POWER */ 0x1 &UIC1 0x1a 0x8
++						/* DMA */ 0x2 &UIC0 0xc 0x4>;
++		interrupt-map-mask = <0xffffffff>;
+ 		};
+ 	};
+         chosen {
+diff --git a/arch/powerpc/platforms/40x/ppc40x_simple.c b/arch/powerpc/platforms/40x/ppc40x_simple.c
+index 2a050007bbae..f7b5decea9bf 100644
+--- a/arch/powerpc/platforms/40x/ppc40x_simple.c
++++ b/arch/powerpc/platforms/40x/ppc40x_simple.c
+@@ -20,6 +20,10 @@
+ #include <asm/time.h>
+ #include <asm/udbg.h>
+ #include <asm/uic.h>
++#if defined(CONFIG_OBS600)
++#include <asm/dcr.h>
++#include <asm/dcr-regs.h>
++#endif
+ 
+ #include <linux/init.h>
+ #include <linux/of_platform.h>
+@@ -64,7 +68,11 @@ static const char * const board[] __initconst = {
+ static int __init ppc40x_probe(void)
+ {
+ 	if (of_device_compatible_match(of_root, board)) {
++#if defined(CONFIG_OBS600)
++		mtdcri(SDR0, SDR0_MFR, mfdcri(SDR0, SDR0_MFR) & ~0x0c000000);
++#else
+ 		pci_set_flags(PCI_REASSIGN_ALL_RSRC);
++#endif
+ 		return 1;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/ibm/emac/phy.c b/drivers/net/ethernet/ibm/emac/phy.c
+index 35865d05fccd..5e5a39254d7c 100644
+--- a/drivers/net/ethernet/ibm/emac/phy.c
++++ b/drivers/net/ethernet/ibm/emac/phy.c
+@@ -72,6 +72,11 @@ int emac_mii_reset_phy(struct mii_phy *phy)
+ 	if ((val & BMCR_ISOLATE) && limit > 0)
+ 		phy_write(phy, MII_BMCR, val & ~BMCR_ISOLATE);
+ 
++#ifdef CONFIG_OBS600
++	phy_write(phy, 0x1c, 0xa410);
++	phy_write(phy, 0x1c, 0x8804);
++#endif
++
+ 	return limit <= 0;
+ }
+ 

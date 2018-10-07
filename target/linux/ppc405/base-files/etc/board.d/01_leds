@@ -1,0 +1,22 @@
+#!/bin/sh
+
+. /lib/functions/uci-defaults.sh
+
+board_config_update
+
+board=$(board_name)
+
+case "$board" in
+    plathome,obs600)
+	ucidef_set_led_netdev  "yellow" "WAN act" "led:yellow" "eth1" "tx rx"
+	ucidef_set_led_netdev  "green"  "LAN act" "led:green" "eth0" "tx rx"
+	ucidef_set_led_default "red"    "POWER"   "led:red" "1"
+	;;
+
+    *)
+	;;
+esac
+
+board_config_flush
+
+exit 0
