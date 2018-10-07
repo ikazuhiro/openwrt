@@ -34,6 +34,7 @@
 #define IH_OS_LINUX		5	/* Linux	*/
 
 #define IH_TYPE_KERNEL		2	/* OS Kernel Image		*/
+#define IH_TYPE_MULTI		4	/* Multi File Image		*/
 #define IH_TYPE_FILESYSTEM	7	/* Filesystem Image		*/
 
 /*
@@ -223,7 +224,8 @@ static ssize_t uimage_verify_default(u_char *buf, size_t len)
 		return -EINVAL;
 	}
 
-	if (header->ih_type != IH_TYPE_KERNEL) {
+	if (header->ih_type != IH_TYPE_KERNEL &&
+	    header->ih_type != IH_TYPE_MULTI) {
 		pr_debug("invalid uImage type: %08x\n",
 			 be32_to_cpu(header->ih_type));
 		return -EINVAL;
