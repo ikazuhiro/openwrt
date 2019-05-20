@@ -1,0 +1,13 @@
+diff --git a/probe-libblkid.c b/probe-libblkid.c
+index ad9f371..2f0dd52 100644
+--- a/probe-libblkid.c
++++ b/probe-libblkid.c
+@@ -35,7 +35,7 @@ load_libblkid(void)
+ 	void *lib;
+ 
+ 	if (!libblkid.loaded) {
+-		lib = dlopen("libblkid.so", RTLD_GLOBAL);
++		lib = dlopen("libblkid.so.1.1.0", RTLD_GLOBAL);
+ 
+ 		if (lib) {
+ 			libblkid.alloc  = dlsym(lib, "blkid_new_probe_from_filename");
