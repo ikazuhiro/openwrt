@@ -22,10 +22,10 @@ platform_do_upgrade() {
 	case "$board" in
 	plathome,obs600)
 		PART_NAME="kernel + initrd"
-		default_do_upgrade "$ARGV"
+		default_do_upgrade "$1"
 		;;
 	*)
-		default_do_upgrade "$ARGV"
+		default_do_upgrade "$1"
 		;;
 	esac
 }
