@@ -27,7 +27,7 @@ define Device/obs600
   KERNEL := kernel-bin | gzip
   KERNEL_INITRAMFS := obs600-kernel | gzip | obs600-uImage-initramfs
   DEVICE_PACKAGES := kmod-leds-gpio kmod-gpio-button-hotplug		\
-  kmod-usb-dwc2 kmod-usb2 kmod-usb-ledtrig-usbport			\
+  kmod-usb2 kmod-usb-ledtrig-usbport			\
   kmod-ledtrig-default-on kmod-ledtrig-netdev
   FEATURES+=ramdisk dt usb squashfs cpiogz
   IMAGE_SIZE = 63000k
