@@ -12,6 +12,9 @@ case "$board" in
 	ucidef_set_led_netdev "lan" "LAN" "$boardname:orange:eth0" "eth0"
 	ucidef_set_led_switch "wan" "WAN" "$boardname:orange:eth1" "switch0" "0x04"
 	;;
+alfa-network,ap121f)
+	ucidef_set_led_netdev "lan" "LAN" "$boardname:green:lan" "eth0"
+	;;
 avm,fritz300e)
 	ucidef_set_led_netdev "lan" "LAN" "$boardname:green:lan" "eth0"
 	ucidef_set_rssimon "wlan0" "200000" "1"
@@ -59,6 +62,7 @@ comfast,cf-e5)
 	ucidef_set_led_rssi "rssimedium" "RSSIMEDIUM" "$boardname:blue:rssi1" "wlan0" "33" "100"
 	ucidef_set_led_rssi "rssihigh" "RSSIHIGH" "$boardname:blue:rssi2" "wlan0" "66" "100"
 	;;
+dlink,dir-842-c2|\
 dlink,dir-859-a1)
 	ucidef_set_led_switch "internet" "WAN" "$boardname:green:internet" "switch0" "0x20"
 	;;
@@ -205,8 +209,8 @@ tplink,tl-wr842n-v2)
 	ucidef_set_led_switch "lan4" "LAN4" "tp-link:green:lan4" "switch0" "0x02"
 	;;
 trendnet,tew-823dru)
-       ucidef_set_led_netdev "wan" "WAN" "trendnet:green:planet" "eth0"
-       ;;
+	ucidef_set_led_netdev "wan" "WAN" "trendnet:green:planet" "eth0"
+	;;
 ubnt,bullet-m|\
 ubnt,bullet-m-xw|\
 ubnt,nanostation-m|\

@@ -111,6 +111,16 @@ define Device/adtran_bsap1840
 endef
 TARGET_DEVICES += adtran_bsap1840
 
+define Device/alfa-network_ap121f
+  ATH_SOC := ar9331
+  DEVICE_VENDOR := ALFA Network
+  DEVICE_MODEL := AP121F
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb-chipidea2 kmod-usb-storage -swconfig
+  IMAGE_SIZE := 16064k
+  SUPPORTED_DEVICES += ap121f
+endef
+TARGET_DEVICES += alfa-network_ap121f
+
 define Device/aruba_ap-105
   ATH_SOC := ar7161
   DEVICE_VENDOR := Aruba
@@ -354,6 +364,29 @@ define Device/dlink_dir-859-a1
   SUPPORTED_DEVICES += dir-859-a1
 endef
 TARGET_DEVICES += dlink_dir-859-a1
+
+define Device/dlink_dir-842-c2
+  ATH_SOC := qca9563
+  DEVICE_VENDOR := D-Link
+  DEVICE_MODEL := DIR-842
+  DEVICE_VARIANT := C2
+  KERNEL := kernel-bin | append-dtb | relocate-kernel | lzma
+  KERNEL_INITRAMFS := $$(KERNEL) | seama
+  IMAGES += factory.bin
+  SEAMA_MTDBLOCK := 5
+  SEAMA_SIGNATURE := wrgac65_dlink.2015_dir842
+  # 64 bytes offset:
+  # - 28 bytes seama_header
+  # - 36 bytes of META data (4-bytes aligned)
+  IMAGE/default := append-kernel | uImage lzma | pad-offset $$$$(BLOCKSIZE) 64 | append-rootfs
+  IMAGE/sysupgrade.bin := \
+	$$(IMAGE/default) | seama | pad-rootfs | append-metadata | check-size $$$$(IMAGE_SIZE)
+  IMAGE/factory.bin := \
+	$$(IMAGE/default) | pad-rootfs -x 64 | seama | seama-seal | check-size $$$$(IMAGE_SIZE)
+  IMAGE_SIZE := 15680k
+  DEVICE_PACKAGES := kmod-usb2 kmod-ath10k-ct ath10k-firmware-qca9888-ct
+endef
+TARGET_DEVICES += dlink_dir-842-c2
 
 define Device/elecom_wrc-1750ghbk2-i
   ATH_SOC := qca9563
