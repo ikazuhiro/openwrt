@@ -23,7 +23,8 @@ endef
 define Device/obs600
   DEVICE_DTS:=obs600
   DEVICE_DTS_DIR:=$(DTS_DIR)
-  DEVICE_TITLE := PlatHome OpenBlocks 600
+  DEVICE_VENDOR := PlatHome
+  DEVICE_MODEL := OpenBlocks 600
   KERNEL := kernel-bin | gzip
   KERNEL_INITRAMFS := obs600-kernel | gzip | obs600-uImage-initramfs
   DEVICE_PACKAGES := kmod-leds-gpio kmod-gpio-button-hotplug		\
