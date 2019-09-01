@@ -1,0 +1,19 @@
+diff --git a/drivers/mtd/mtdsplit/mtdsplit_uimage.c b/drivers/mtd/mtdsplit/mtdsplit_uimage.c
+index 64bc0be749..1f9578c7de 100644
+--- a/drivers/mtd/mtdsplit/mtdsplit_uimage.c
++++ b/drivers/mtd/mtdsplit/mtdsplit_uimage.c
+@@ -489,10 +489,10 @@ static struct mtd_part_parser uimage_okli_parser = {
+ static int __init mtdsplit_uimage_init(void)
+ {
+ 	register_mtd_parser(&uimage_generic_parser);
+-	register_mtd_parser(&uimage_netgear_parser);
+-	register_mtd_parser(&uimage_edimax_parser);
+-	register_mtd_parser(&uimage_fonfxc_parser);
+-	register_mtd_parser(&uimage_okli_parser);
++	/* register_mtd_parser(&uimage_netgear_parser); */
++	/* register_mtd_parser(&uimage_edimax_parser); */
++	/* register_mtd_parser(&uimage_fonfxc_parser); */
++	/* register_mtd_parser(&uimage_okli_parser); */
+ 
+ 	return 0;
+ }
