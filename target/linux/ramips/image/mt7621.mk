@@ -96,6 +96,16 @@ define Device/afoundry_ew1200
 endef
 TARGET_DEVICES += afoundry_ew1200
 
+define Device/alfa-network_quad-e4g
+  MTK_SOC := mt7621
+  IMAGE_SIZE := 16064k
+  DEVICE_VENDOR := ALFA Network
+  DEVICE_MODEL := Quad-E4G
+  DEVICE_PACKAGES := kmod-ata-core kmod-ata-ahci kmod-sdhci-mt7620 kmod-usb3 \
+	uboot-envtools
+endef
+TARGET_DEVICES += alfa-network_quad-e4g
+
 define Device/asiarf_ap7621-001
   MTK_SOC := mt7621
   IMAGE_SIZE := 16000k
@@ -459,66 +469,71 @@ define Device/netgear_ex6150
 endef
 TARGET_DEVICES += netgear_ex6150
 
-define Device/netgear_r6220
+define Device/netgear_sercomm_nand
   MTK_SOC := mt7621
   BLOCKSIZE := 128k
   PAGESIZE := 2048
   KERNEL_SIZE := 4096k
-  IMAGE_SIZE := 28672k
   UBINIZE_OPTS := -E 5
-  SERCOMM_HWID := AYA
-  SERCOMM_HWVER := A001
-  SERCOMM_SWVER := 0x0086
   IMAGES += factory.img kernel.bin rootfs.bin
   IMAGE/factory.img := pad-extra 2048k | append-kernel | pad-to 6144k | append-ubi | \
-	pad-to $$$$(BLOCKSIZE) | sercom-footer | pad-to 128 | zip R6220.bin | sercom-seal
+	pad-to $$$$(BLOCKSIZE) | sercom-footer | pad-to 128 | \
+	zip $$$$(SERCOMM_HWNAME).bin | sercom-seal
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
   IMAGE/kernel.bin := append-kernel
   IMAGE/rootfs.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
   DEVICE_VENDOR := NETGEAR
+  DEVICE_PACKAGES := kmod-mt7603 kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
+endef
+DEVICE_VARS += SERCOMM_HWNAME SERCOMM_HWID SERCOMM_HWVER SERCOMM_SWVER
+
+define Device/netgear_r6220
+  $(Device/netgear_sercomm_nand)
   DEVICE_MODEL := R6220
-  DEVICE_PACKAGES := \
-	kmod-mt7603 kmod-mt76x2 kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
+  SERCOMM_HWNAME := R6220
+  SERCOMM_HWID := AYA
+  SERCOMM_HWVER := A001
+  SERCOMM_SWVER := 0x0086
+  IMAGE_SIZE := 28672k
+  DEVICE_PACKAGES += kmod-mt76x2
   SUPPORTED_DEVICES += r6220
 endef
 TARGET_DEVICES += netgear_r6220
 
-define Device/netgear_r6260_r6350_r6850
-  MTK_SOC := mt7621
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  KERNEL_SIZE := 4096k
-  IMAGE_SIZE := 40960k
-  UBINIZE_OPTS := -E 5
+
+define Device/netgear_r6260
+  $(Device/netgear_sercomm_nand)
+  DEVICE_MODEL := R6260
+  SERCOMM_HWNAME := R6260
   SERCOMM_HWID := CHJ
   SERCOMM_HWVER := A001
   SERCOMM_SWVER := 0x0052
-  IMAGES += factory.img kernel.bin rootfs.bin
-  IMAGE/factory.img := pad-extra 2048k | append-kernel | pad-to 6144k | append-ubi | \
-	pad-to $$$$(BLOCKSIZE) | sercom-footer | pad-to 128 | zip $$$$(DEVICE_MODEL).bin | sercom-seal
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-  IMAGE/kernel.bin := append-kernel
-  IMAGE/rootfs.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
-  DEVICE_VENDOR := NETGEAR
-  DEVICE_PACKAGES := \
-	kmod-mt7603 kmod-mt7615e kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
-endef
-
-define Device/netgear_r6260
-  $(Device/netgear_r6260_r6350_r6850)
-  DEVICE_MODEL := R6260
+  IMAGE_SIZE := 40960k
+  DEVICE_PACKAGES += kmod-mt7615e
 endef
 TARGET_DEVICES += netgear_r6260
 
 define Device/netgear_r6350
-  $(Device/netgear_r6260_r6350_r6850)
+  $(Device/netgear_sercomm_nand)
   DEVICE_MODEL := R6350
+  SERCOMM_HWNAME := R6350
+  SERCOMM_HWID := CHJ
+  SERCOMM_HWVER := A001
+  SERCOMM_SWVER := 0x0052
+  IMAGE_SIZE := 40960k
+  DEVICE_PACKAGES += kmod-mt7615e
 endef
 TARGET_DEVICES += netgear_r6350
 
 define Device/netgear_r6850
-  $(Device/netgear_r6260_r6350_r6850)
+  $(Device/netgear_sercomm_nand)
   DEVICE_MODEL := R6850
+  SERCOMM_HWNAME := R6850
+  SERCOMM_HWID := CHJ
+  SERCOMM_HWVER := A001
+  SERCOMM_SWVER := 0x0052
+  IMAGE_SIZE := 40960k
+  DEVICE_PACKAGES += kmod-mt7615e
 endef
 TARGET_DEVICES += netgear_r6850
 
@@ -723,6 +738,7 @@ TARGET_DEVICES += unielec_u7621-06-64m
 define Device/wevo_11acnas
   MTK_SOC := mt7621
   IMAGE_SIZE := 16064k
+  UIMAGE_NAME := 11AC-NAS-Router(0.0.0)
   DEVICE_VENDOR := WeVO
   DEVICE_MODEL := 11AC NAS Router
   DEVICE_PACKAGES := kmod-mt7603 kmod-mt76x2 kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
@@ -733,6 +749,7 @@ TARGET_DEVICES += wevo_11acnas
 define Device/wevo_w2914ns-v2
   MTK_SOC := mt7621
   IMAGE_SIZE := 16064k
+  UIMAGE_NAME := W2914NS-V2(0.0.0)
   DEVICE_VENDOR := WeVO
   DEVICE_MODEL := W2914NS
   DEVICE_VARIANT := v2

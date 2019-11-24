@@ -24,6 +24,11 @@ aigale,ai-br100)
 alfa-network,ac1200rm)
 	set_wifi_led "$boardname:green:wlan2g" "wlan1"
 	;;
+alfa-network,r36m-e4g)
+	ucidef_set_led_netdev "4g" "4g" "$boardname:orange:4g" "wwan0"
+	ucidef_set_led_switch "lan" "lan" "$boardname:green:lan" "switch0" "0x8"
+	ucidef_set_led_switch "wan" "wan" "$boardname:green:wan" "switch0" "0x10"
+	;;
 alfa-network,tube-e4g)
 	ucidef_set_led_netdev "4g" "4g" "$boardname:green:4g" "wwan0"
 	ucidef_set_led_netdev "lan" "lan" "$boardname:blue:lan" "eth0"
@@ -155,7 +160,8 @@ netgear,ex2700|\
 netgear,wn3000rp-v3)
 	set_wifi_led "$boardname:green:router"
 	;;
-netgear,ex3700)
+netgear,ex3700|\
+netgear,ex6130)
 	ucidef_set_led_netdev "wlan5g" "ROUTER (green)" "$boardname:green:router" "wlan0"
 	ucidef_set_led_netdev "wlan2g" "DEVICE (green)" "$boardname:green:device" "wlan1"
 	;;
@@ -211,6 +217,11 @@ zbtlink,zbt-we826-32m)
 zbtlink,zbt-we1026-5g-16m)
 	ucidef_set_led_netdev "lan" "LAN" "we1026-5g:green:lan" "eth0"
 	set_wifi_led "we1026-5g:green:wifi"
+	;;
+zbtlink,zbt-we1026-h-32m)
+	set_wifi_led "we1026-h:green:wifi"
+	ucidef_set_led_switch "lan" "lan" "we1026-h:green:lan" "switch0" "0x8"
+	ucidef_set_led_switch "wan" "wan" "we1026-h:green:wan" "switch0" "0x10"
 	;;
 zbtlink,zbt-we2026)
 	set_wifi_led "$boardname:green:wlan"
