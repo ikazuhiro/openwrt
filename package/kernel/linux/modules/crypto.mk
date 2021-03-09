@@ -651,6 +651,8 @@ define KernelPackage/crypto-md5/mpc85xx
   AUTOLOAD+=$(call AutoLoad,09,md5-ppc)
 endef
 
+KernelPackage/crypto-md5/ppc405=$(KernelPackage/crypto-md5/mpc85xx)
+
 $(eval $(call KernelPackage,crypto-md5))
 
 
@@ -851,6 +853,7 @@ define KernelPackage/crypto-sha1
 	CONFIG_CRYPTO_SHA1_ARM_NEON \
 	CONFIG_CRYPTO_SHA1_OCTEON \
 	CONFIG_CRYPTO_SHA1_PPC_SPE \
+	CONFIG_CRYPTO_SHA1_PPC \
 	CONFIG_CRYPTO_SHA1_SSSE3
   FILES:=$(LINUX_DIR)/crypto/sha1_generic.ko
   AUTOLOAD:=$(call AutoLoad,09,sha1_generic)
@@ -887,6 +890,11 @@ endef
 define KernelPackage/crypto-sha1/x86/64
   FILES+=$(LINUX_DIR)/arch/x86/crypto/sha1-ssse3.ko
   AUTOLOAD+=$(call AutoLoad,09,sha1-ssse3)
+endef
+
+define KernelPackage/crypto-sha1/ppc405
+  FILES+=$(LINUX_DIR)/arch/powerpc/crypto/sha1-powerpc.ko
+  AUTOLOAD+=$(call AutoLoad,09,sha1-powerpc)
 endef
 
 $(eval $(call KernelPackage,crypto-sha1))
