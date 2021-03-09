@@ -1,0 +1,20 @@
+--- a/drivers/usb/dwc_otg/dwc_otg_cil.c	2020-11-01 00:31:48.196809007 +0900
++++ b/drivers/usb/dwc_otg/dwc_otg_cil.c	2020-12-10 22:38:34.567329332 +0900
+@@ -1460,7 +1460,7 @@
+ }
+ 
+ #ifdef DEBUG
+-static void hc_xfer_timeout(unsigned long _ptr)
++static void hc_xfer_timeout(struct timer_list * _ptr)
+ {
+ 	hc_xfer_info_t *xfer_info = (hc_xfer_info_t *)_ptr;
+ 	int hc_num = xfer_info->hc->hc_num;
+@@ -1666,7 +1666,7 @@
+ 	_core_if->hc_xfer_timer[_hc->hc_num].function = hc_xfer_timeout;
+ 	_core_if->hc_xfer_info[_hc->hc_num].core_if = _core_if;
+ 	_core_if->hc_xfer_info[_hc->hc_num].hc = _hc;
+-	_core_if->hc_xfer_timer[_hc->hc_num].data = (unsigned long)(&_core_if->hc_xfer_info[_hc->hc_num]);
++	_core_if->hc_xfer_timer[_hc->hc_num].flags = (u32)(&_core_if->hc_xfer_info[_hc->hc_num]);
+ 	_core_if->hc_xfer_timer[_hc->hc_num].expires = jiffies + (HZ*10);
+ 	add_timer(&_core_if->hc_xfer_timer[_hc->hc_num]);
+ #endif
