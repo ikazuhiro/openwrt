@@ -893,6 +893,7 @@ define KernelPackage/crypto-sha1
 	CONFIG_CRYPTO_SHA1_ARM_NEON \
 	CONFIG_CRYPTO_SHA1_OCTEON \
 	CONFIG_CRYPTO_SHA1_PPC_SPE \
+	CONFIG_CRYPTO_SHA1_PPC \
 	CONFIG_CRYPTO_SHA1_SSSE3
   FILES:=$(LINUX_DIR)/crypto/sha1_generic.ko
   AUTOLOAD:=$(call AutoLoad,09,sha1_generic)
@@ -924,6 +925,11 @@ KernelPackage/crypto-sha1/tegra=$(KernelPackage/crypto-sha1/arm)
 define KernelPackage/crypto-sha1/mpc85xx
   FILES+=$(LINUX_DIR)/arch/powerpc/crypto/sha1-ppc-spe.ko
   AUTOLOAD+=$(call AutoLoad,09,sha1-ppc-spe)
+endef
+
+define KernelPackage/crypto-sha1/ppc405
+  FILES+=$(LINUX_DIR)/arch/powerpc/crypto/sha1-powerpc.ko
+  AUTOLOAD+=$(call AutoLoad,09,sha1-powerpc)
 endef
 
 ifndef CONFIG_TARGET_uml
