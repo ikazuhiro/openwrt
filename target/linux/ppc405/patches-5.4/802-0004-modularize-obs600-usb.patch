@@ -1,0 +1,30 @@
+Index: linux-5.4.99/arch/powerpc/platforms/40x/Kconfig
+===================================================================
+--- linux-5.4.99.orig/arch/powerpc/platforms/40x/Kconfig
++++ linux-5.4.99/arch/powerpc/platforms/40x/Kconfig
+@@ -80,6 +80,14 @@ config OBS600
+ 	help
+ 	  This option enables support for PlatHome OpenBlockS 600 server
+ 
++if OBS600
++config OBS600_DWC_OTG
++       tristate "OpenBlocks 600 DWC_OTG Wrapper"
++       depends on OBS600
++       help
++	Wrapper for DWC_OTG driver.
++endif
++
+ config PPC40x_SIMPLE
+ 	bool "Simple PowerPC 40x board support"
+ 	depends on 40x
+Index: linux-5.4.99/arch/powerpc/platforms/40x/Makefile
+===================================================================
+--- linux-5.4.99.orig/arch/powerpc/platforms/40x/Makefile
++++ linux-5.4.99/arch/powerpc/platforms/40x/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-#obj-$(CONFIG_OBS600)				+= obs600-usb.o
++obj-$(CONFIG_OBS600_DWC_OTG)			+= obs600-usb.o
+ obj-$(CONFIG_WALNUT)				+= walnut.o
+ obj-$(CONFIG_XILINX_VIRTEX_GENERIC_BOARD)	+= virtex.o
+ obj-$(CONFIG_EP405)				+= ep405.o
