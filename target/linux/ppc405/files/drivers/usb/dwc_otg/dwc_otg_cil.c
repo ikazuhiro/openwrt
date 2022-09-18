@@ -1460,7 +1460,7 @@ static inline void hc_set_even_odd_frame(dwc_otg_core_if_t *_core_if,
 }
 
 #ifdef DEBUG
-static void hc_xfer_timeout(unsigned long _ptr)
+static void hc_xfer_timeout(struct timer_list * _ptr)
 {
 	hc_xfer_info_t *xfer_info = (hc_xfer_info_t *)_ptr;
 	int hc_num = xfer_info->hc->hc_num;
@@ -1666,7 +1666,7 @@ printk("dwc_otg_hc_start_transfer _hc->xfer_buff not 4 byte alignment\n");
 	_core_if->hc_xfer_timer[_hc->hc_num].function = hc_xfer_timeout;
 	_core_if->hc_xfer_info[_hc->hc_num].core_if = _core_if;
 	_core_if->hc_xfer_info[_hc->hc_num].hc = _hc;
-	_core_if->hc_xfer_timer[_hc->hc_num].data = (unsigned long)(&_core_if->hc_xfer_info[_hc->hc_num]);
+	_core_if->hc_xfer_timer[_hc->hc_num].flags = (u32)(&_core_if->hc_xfer_info[_hc->hc_num]);
 	_core_if->hc_xfer_timer[_hc->hc_num].expires = jiffies + (HZ*10);
 	add_timer(&_core_if->hc_xfer_timer[_hc->hc_num]);
 #endif
