@@ -229,7 +229,7 @@ static int check_parameters(dwc_otg_core_if_t *core_if)
 		}
 	}
 
-	for (i=0; i<15; i++) {
+	for (i=0; i < MAX_PERIO_FIFOS; i++) {
 		/** @todo should be like above */
 		//DWC_OTG_PARAM_ERR(dev_perio_tx_fifo_size[i],4,768,"dev_perio_tx_fifo_size");
 		if (dwc_otg_module_params.dev_perio_tx_fifo_size[i] != -1) {
@@ -243,7 +243,7 @@ static int check_parameters(dwc_otg_core_if_t *core_if)
 	}
 
 	DWC_OTG_PARAM_ERR(en_multiple_tx_fifo, 0, 1, "en_multiple_tx_fifo");
-	for (i = 0; i < 15; i++) {
+	for (i = 0; i < MAX_TX_FIFOS; i++) {
 		/** @todo should be like above */
 		    //DWC_OTG_PARAM_ERR(dev_tx_fifo_size[i],4,768,"dev_tx_fifo_size");
 		    if (dwc_otg_module_params.dev_tx_fifo_size[i] != -1) {
@@ -474,7 +474,7 @@ static int check_parameters(dwc_otg_core_if_t *core_if)
 					    0);
 #endif
 
-	for (i=0; i<16; i++) {
+	for (i = 0; i < MAX_PERIO_FIFOS; i++) {
 
 		int changed = 1;
 		int error = 0;
@@ -498,7 +498,7 @@ static int check_parameters(dwc_otg_core_if_t *core_if)
 				((dwc_otg_module_params.en_multiple_tx_fifo == 1) &&
 				(core_if->hwcfg4.b.ded_fifo_en == 0)) ? 0 : 1, 0);
 
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < MAX_TX_FIFOS; i++) {
 		int changed = 1;
 		int error = 0;
 		if (dwc_otg_module_params.dev_tx_fifo_size[i] == -1) {
