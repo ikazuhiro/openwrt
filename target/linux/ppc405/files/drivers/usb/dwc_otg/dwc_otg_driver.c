@@ -675,7 +675,7 @@ dwc_otg_driver_probe(struct platform_device *_dev)
 	/*
      * Map the DWC_otg Core memory into virtual address space.
      */
-    dwc_otg_device->base = ioremap_nocache(dwc_otg_device->phys_addr, dwc_otg_device->base_len);
+    dwc_otg_device->base = ioremap(dwc_otg_device->phys_addr, dwc_otg_device->base_len);
     if (dwc_otg_device->base == NULL)    {
         dev_err(&_dev->dev, "ioremap() failed\n");
         retval = -ENOMEM;
