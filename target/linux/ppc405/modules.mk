@@ -27,8 +27,8 @@ define KernelPackage/usb-dwc-otg
   KCONFIG:= \
 	CONFIG_DWC_OTG \
 	CONFIG_DWC_OTG_HOST_ONLY=y \
-	CONFIG_DWC_OTG_LANTIQ=n \
-	CONFIG_DWC_OTG_405EX=y
+	CONFIG_DWC_OTG_405EX=y \
+	CONFIG_DWC_OTG_DEBUG=y
   DEPENDS:=+kmod-usb-obs600-dwc-otg
   FILES:= \
 	$(LINUX_DIR)/drivers/usb/dwc_otg/dwc_otg.ko
