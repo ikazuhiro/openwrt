@@ -20,13 +20,6 @@ endif
 #	EXTRA_CFLAGS += -DDWC_HS_ELECT_TST
 #	EXTRA_CFLAGS    += -DDWC_OTG_EXT_CHG_PUMP
 
-ifeq ($(CONFIG_DWC_OTG_LANTIQ),y)
-     EXTRA_CFLAGS += -Dlinux -D__LINUX__ -DDWC_OTG_IFX -DDWC_OTG_HOST_ONLY -DDWC_HOST_ONLY  -D__KERNEL__ 
-endif
-ifeq ($(CONFIG_DWC_OTG_LANTIQ),m)
-     EXTRA_CFLAGS += -Dlinux -D__LINUX__ -DDWC_OTG_IFX -DDWC_HOST_ONLY -DMODULE -D__KERNEL__  -DDEBUG
-endif
-
 obj-$(CONFIG_DWC_OTG)	:= dwc_otg.o
 dwc_otg-objs    := dwc_otg_hcd.o dwc_otg_hcd_intr.o dwc_otg_hcd_queue.o
 #dwc_otg-objs	+= dwc_otg_pcd.o dwc_otg_pcd_intr.o 

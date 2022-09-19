@@ -22,14 +22,7 @@ endchoice
 choice
         prompt "Platform"
         depends on DWC_OTG
-        default DWC_OTG_LANTIQ
-
-config DWC_OTG_LANTIQ
-        bool "Lantiq"
-        depends on LANTIQ
-        help
-          Danube USB Host Controller
-		  platform support
+        default DWC_OTG_405EX
 
 config DWC_OTG_405EX
         bool "405EX"
