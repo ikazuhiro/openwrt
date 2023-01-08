@@ -3,7 +3,7 @@ define Build/obs600-kernel
 endef
 
 define Build/obs600-uImage-initramfs
-	( cd $(TARGET_DIR); find . | cpio -o -H newc -R root:root | gzip -9n > $(KDIR)/tmp/$(IMG_PREFIX)-initramfs-gz)
+	( cd $(TARGET_DIR); find . | cpio -o -H newc -R root:root | libdeflate-gzip -12 > $(KDIR)/tmp/$(IMG_PREFIX)-initramfs-gz)
 	mkimage -n '$(call toupper,$(ARCH)) $(VERSION_DIST) Linux-$(LINUX_VERSION)' -A $(LINUX_KARCH) -O linux -T multi -C gzip \
 	-d $@:$(KDIR)/tmp/$(IMG_PREFIX)-initramfs-gz:$(KDIR)/image-$(firstword $(DEVICE_DTS)).dtb \
 	$(KDIR)/tmp/obs600-uImage-initramfs
@@ -24,8 +24,8 @@ define Device/obs600
   DEVICE_DTS_DIR:=$(DTS_DIR)
   DEVICE_VENDOR := PlatHome
   DEVICE_MODEL := OpenBlocks 600
-  KERNEL := kernel-bin | gzip
-  KERNEL_INITRAMFS := obs600-kernel | gzip | obs600-uImage-initramfs
+  KERNEL := kernel-bin | libdeflate-gzip
+  KERNEL_INITRAMFS := obs600-kernel | libdeflate-gzip | obs600-uImage-initramfs
   DEVICE_PACKAGES := kmod-leds-gpio kmod-gpio-button-hotplug		\
   kmod-usb-dwc2 kmod-usb-ledtrig-usbport			\
   kmod-ledtrig-default-on kmod-ledtrig-netdev
@@ -33,7 +33,7 @@ define Device/obs600
   IMAGE_SIZE = 63000k
   BLOCKSIZE = 128k
   IMAGES += sysupgrade.bin
-  IMAGE/sysupgrade.bin := obs600-kernel | gzip | obs600-uImage-dummyfs | pad-to $$$$(BLOCKSIZE) | append-rootfs | check-size $$$$(IMAGE_SIZE) | append-metadata
+  IMAGE/sysupgrade.bin := obs600-kernel | libdeflate-gzip | obs600-uImage-dummyfs | pad-to $$$$(BLOCKSIZE) | append-rootfs | check-size $$$$(IMAGE_SIZE) | append-metadata
   SUPPORTED_DEVICES += plathome,obs600 obs600
 endef
 
