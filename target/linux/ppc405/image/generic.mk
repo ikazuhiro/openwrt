@@ -30,10 +30,12 @@ define Device/obs600
   kmod-usb-dwc2 kmod-usb-ledtrig-usbport			\
   kmod-ledtrig-default-on kmod-ledtrig-netdev
   FEATURES+=ramdisk dt usb squashfs cpiogz
-  IMAGE_SIZE = 63000k
-  BLOCKSIZE = 128k
+  IMAGE_SIZE := 63000k
+  KERNEL_SIZE := 3584k
+  BLOCKSIZE := 128k
   IMAGES += sysupgrade.bin
-  IMAGE/sysupgrade.bin := obs600-kernel | libdeflate-gzip | obs600-uImage-dummyfs | pad-to $$$$(BLOCKSIZE) | append-rootfs | check-size $$$$(IMAGE_SIZE) | append-metadata
+  IMAGE/sysupgrade.bin := obs600-kernel | libdeflate-gzip | obs600-uImage-dummyfs | pad-to $$(KERNEL_SIZE) | \
+	pad-to $$$$(BLOCKSIZE) | append-rootfs | check-size $$$$(IMAGE_SIZE) | append-metadata
   SUPPORTED_DEVICES += plathome,obs600 obs600
 endef
 
