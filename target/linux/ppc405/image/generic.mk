@@ -27,11 +27,12 @@ define Device/obs600
   KERNEL := kernel-bin | libdeflate-gzip
   KERNEL_INITRAMFS := obs600-kernel | libdeflate-gzip | obs600-uImage-initramfs
   DEVICE_PACKAGES := kmod-leds-gpio kmod-gpio-button-hotplug		\
-  kmod-usb-dwc2 kmod-usb-ledtrig-usbport			\
-  kmod-ledtrig-default-on kmod-ledtrig-netdev
-  FEATURES+=ramdisk dt usb squashfs cpiogz
+  kmod-usb-dwc2 kmod-usb-ledtrig-usbport kmod-ledtrig-default-on	\
+  kmod-ledtrig-netdev kmod-crypto-skcipher kmod-ibm-emac		\
+  kmod-crypto-aes kmod-gpio-ppc4xx
+  FEATURES+=ramdisk dt usb squashfs cpiogz gpio rtc
   IMAGE_SIZE := 63000k
-  KERNEL_SIZE := 3584k
+  KERNEL_SIZE := 3072k
   BLOCKSIZE := 128k
   IMAGES += sysupgrade.bin
   IMAGE/sysupgrade.bin := obs600-kernel | libdeflate-gzip | obs600-uImage-dummyfs | pad-to $$(KERNEL_SIZE) | \

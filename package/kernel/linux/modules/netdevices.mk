@@ -7,6 +7,13 @@
 
 NETWORK_DEVICES_MENU:=Network Devices
 
+
+define AddDepends/netdev
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  DEPENDS+= $(1)
+endef
+
+
 define KernelPackage/sis190
   SUBMENU:=$(NETWORK_DEVICES_MENU)
   TITLE:=SiS 190 Fast/Gigabit Ethernet support
@@ -142,7 +149,7 @@ $(eval $(call KernelPackage,mii))
 define KernelPackage/mdio-devres
   SUBMENU:=$(NETWORK_DEVICES_MENU)
   TITLE:=Supports MDIO device registration
-  DEPENDS:=+kmod-libphy +(TARGET_armsr||TARGET_bcm27xx_bcm2708||TARGET_malta||TARGET_tegra):kmod-of-mdio
+  DEPENDS:=+kmod-libphy +(TARGET_armsr||TARGET_bcm27xx_bcm2708||TARGET_malta||TARGET_tegra||TARGET_ppc405):kmod-of-mdio
   KCONFIG:=CONFIG_MDIO_DEVRES
   HIDDEN:=1
   FILES:=$(LINUX_DIR)/drivers/net/phy/mdio_devres.ko
@@ -1190,7 +1197,7 @@ define KernelPackage/of-mdio
   FILES:= \
 	$(LINUX_DIR)/drivers/net/mdio/of_mdio.ko \
 	$(LINUX_DIR)/drivers/net/mdio/fwnode_mdio.ko
-  AUTOLOAD:=$(call AutoLoad,41,of_mdio)
+  AUTOLOAD:=$(call AutoLoad,41,of_mdio,1)
 endef
 
 define KernelPackage/of-mdio/description
